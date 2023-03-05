@@ -21,7 +21,7 @@ class Category(models.Model):
 class Shop(models.Model):
     name = models.CharField(max_length=255)
 
-    def str(self):
+    def __str__(self):
         return self.name
 
 
@@ -33,7 +33,7 @@ class Product(models.Model):
     amount = models.IntegerField(null=True, blank=True)
     shop = models.ForeignKey(Shop, on_delete=models.CASCADE)
 
-    def str(self):
+    def __str__(self):
         return self.title
 
 
@@ -49,14 +49,14 @@ class Customer(models.Model):
     email = models.EmailField(max_length=255)
     phone = models.CharField(max_length=30)
 
-    def str(self):
+    def __str__(self):
         return self.name
 
 
 class Cart(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
 
-    def str(self):
+    def __str__(self):
         return self.customer.name
 
 
@@ -75,7 +75,7 @@ class OrderItem(models.Model):
     status = models.CharField(
         max_length=1, choices=StatusChoice.choices, default=StatusChoice.INCONFIRMED)
 
-    def str(self):
+    def __str__(self):
         return self.product.title
 
 
@@ -84,5 +84,5 @@ class Favourite(models.Model):
         Customer, on_delete=models.CASCADE, null=True, blank=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
-    def str(self):
+    def __str__(self):
         return self.product.title
