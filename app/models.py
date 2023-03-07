@@ -92,7 +92,6 @@ class CartItem(models.Model):
 class Order(models.Model):
 
     class StatusChoice(models.TextChoices):
-        APPROVED = 'A'
         INCONFIRMED = 'I'
         PENDING = 'P'
         DELIVERED = 'D'
@@ -102,6 +101,7 @@ class Order(models.Model):
         Customer, on_delete=models.CASCADE, related_name='orders')
     status = models.CharField(
         max_length=1, choices=StatusChoice.choices, default=StatusChoice.INCONFIRMED)
+    address = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 
