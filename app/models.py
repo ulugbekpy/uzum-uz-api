@@ -44,7 +44,7 @@ class Product(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
     category = models.ManyToManyField(
-        Category, on_delete=models.CASCADE, related_name='product')
+        Category, related_name='product')
     price = models.DecimalField(max_digits=10, decimal_places=2)
     amount = models.IntegerField(null=True, blank=True)
     shop = models.ForeignKey(Shop, on_delete=models.CASCADE)

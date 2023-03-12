@@ -6,7 +6,7 @@ class UserSerializer(ModelSerializer):
 
     class Meta:
         model = User
-        exclude = ["is_staff", "is_admin", "is_superuser"]
+        exclude = []
 
     def create(self, validated_data):
         password = validated_data.pop("password", None)
