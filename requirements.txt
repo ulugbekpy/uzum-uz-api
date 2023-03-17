@@ -2,3 +2,10 @@ Django==4.1.7
 djangorestframework==3.14.0
 django-environ==0.10.0
 django-mptt==0.14.0
+djangorestframework-simplejwt==5.2.2
+django-filter==22.1
+drf-yasg==1.21.4
+pillow==9.4.0
+cffi==1.15.1 
+cryptography==39.0.2 
+pycparser==2.21

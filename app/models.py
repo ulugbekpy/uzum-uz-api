@@ -7,6 +7,7 @@ from mptt.models import MPTTModel, TreeForeignKey
 
 class User(AbstractBaseUser, PermissionsMixin):
     phone = models.CharField(max_length=20, unique=True)
+    is_staff = models.BooleanField(default=True)
 
     USERNAME_FIELD = 'phone'
 
