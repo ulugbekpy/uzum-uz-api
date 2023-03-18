@@ -8,7 +8,7 @@ from .views import UserViewSet, CustomerViewSet, SellerViewSet
 
 router = DefaultRouter()
 
-router.register('user', UserViewSet)
+# router.register('user', UserViewSet)
 router.register('customer', CustomerViewSet)
 router.register('seller', SellerViewSet)
 
