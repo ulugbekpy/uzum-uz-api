@@ -7,7 +7,7 @@ from mptt.models import MPTTModel, TreeForeignKey
 
 class User(AbstractBaseUser, PermissionsMixin):
     phone = models.CharField(max_length=20, unique=True)
-    is_staff = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=True)
     is_active = models.BooleanField(default=True)
 
     USERNAME_FIELD = 'phone'
@@ -30,8 +30,11 @@ class Category(MPTTModel):
 
 class Seller(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    phone = models.CharField(max_length=20, unique=True)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
+    certificate = models.CharField(max_length=50)
+    address = models.TextField()
 
 
 class Shop(models.Model):
@@ -62,6 +65,7 @@ class ProductImage(models.Model):
 
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    phone = models.CharField(max_length=20, unique=True)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     address = models.TextField(blank=True, null=True)
