@@ -1,6 +1,8 @@
 from rest_framework.serializers import ModelSerializer
 from rest_framework import serializers
-from .models import User, Customer, Seller
+from .models import (User, Customer, Seller, Shop,
+                     Category, Product, ProductImage,
+                     Cart, CartItem, Order, OrderItem, Favourite)
 
 
 class UserSerializer(ModelSerializer):
@@ -142,3 +144,57 @@ class SellerGetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Seller
         fields = ('username', 'first_name', 'last_name', 'address')
+
+
+class ShopSerializer(ModelSerializer):
+    class Meta:
+        model = Shop
+        exclude = []
+
+
+class CategorySerializer(ModelSerializer):
+    class Meta:
+        model = Category
+        exclude = []
+
+
+class ProductSerializer(ModelSerializer):
+    class Meta:
+        model = Product
+        exclude = []
+
+
+class ProductImageSerializer(ModelSerializer):
+    class Meta:
+        model = ProductImage
+        exclude = []
+
+
+class CartSerializer(ModelSerializer):
+    class Meta:
+        model = Cart
+        exclude = []
+
+
+class OrderSerializer(ModelSerializer):
+    class Meta:
+        model = Order
+        exclude = []
+
+
+class CartItemSerializer(ModelSerializer):
+    class Meta:
+        model = CartItem
+        exclude = []
+
+
+class OrderItemSerializer(ModelSerializer):
+    class Meta:
+        model = OrderItem
+        exclude = []
+
+
+class FavouriteSerializer(ModelSerializer):
+    class Meta:
+        model = Favourite
+        exclude = []

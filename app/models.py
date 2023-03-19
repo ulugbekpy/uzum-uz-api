@@ -36,6 +36,9 @@ class Seller(models.Model):
     certificate = models.CharField(max_length=50)
     address = models.TextField()
 
+    def __str__(self) -> str:
+        return (self.first_name + self.last_name)
+
 
 class Shop(models.Model):
     seller = models.ForeignKey(Seller, on_delete=models.CASCADE)
