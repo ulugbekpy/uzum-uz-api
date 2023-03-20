@@ -1,10 +1,10 @@
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, ViewSet
 from .models import (User, Customer, Seller, Shop,
                      Category, Product, ProductImage,
                      Cart, CartItem, Order, OrderItem, Favourite)
 from .serializers import (UserSerializer, CustomerSavingSerializer, CustomerGetSerializer,
                           SellerSavingSerializer, SellerGetSerializer, ShopSerializer,
-                          ProductSerializer, ProductImageSerializer,
+                          ProductSerializer, ProductImageSerializer, CategorySerializer,
                           CartSerializer, OrderSerializer, CartItemSerializer,
                           OrderItemSerializer, FavouriteSerializer)
 # from django.shortcuts import get_object_or_404
@@ -73,3 +73,17 @@ class CartItemViewSet(ModelViewSet):
 class FavouriteViewSet(ModelViewSet):
     queryset = Favourite.objects.all()
     serializer_class = FavouriteSerializer
+
+
+class CategoryViewSet(ViewSet):
+    queryset = Category.objects.filter(parent__isnull=True)
+    serializer_class = CategorySerializer
+    pagination_class = None
+
+    def get_queryset(self):
+        return self.queryset.all()
+
+    def list(self, request):
+        queryset = self.get_queryset()
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

@@ -152,10 +152,10 @@ class ShopSerializer(ModelSerializer):
         exclude = []
 
 
-class CategorySerializer(ModelSerializer):
+class CategorySimpleSerializer(ModelSerializer):
     class Meta:
         model = Category
-        exclude = []
+        fields = ['id', 'name', 'slug', 'icon']
 
 
 class ProductSerializer(ModelSerializer):
@@ -198,3 +198,11 @@ class FavouriteSerializer(ModelSerializer):
     class Meta:
         model = Favourite
         exclude = []
+
+
+class CategorySerializer(ModelSerializer):
+    children = CategorySimpleSerializer(many=True)
+
+    class Meta:
+        model = Category
+        fields = ['id', 'name', 'slug', 'icon', 'children']
