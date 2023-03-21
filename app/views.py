@@ -1,12 +1,11 @@
 from rest_framework.viewsets import ModelViewSet, ViewSet
 from .models import (User, Customer, Seller, Shop,
                      Category, Product, ProductImage,
-                     Cart, CartItem, Order, OrderItem, Favourite)
+                     Cart, Order, Favourite)
 from .serializers import (UserSerializer, CustomerSavingSerializer, CustomerGetSerializer,
                           SellerSavingSerializer, SellerGetSerializer, ShopSerializer,
                           ProductSerializer, ProductImageSerializer, CategorySerializer,
-                          CartSerializer, OrderSerializer, CartItemSerializer,
-                          OrderItemSerializer, FavouriteSerializer)
+                          CartSerializer, OrderSerializer, FavouriteSerializer)
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
 from .filters import ProductFilter
@@ -63,16 +62,6 @@ class CartViewSet(ModelViewSet):
 class OrderViewSet(ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
-
-
-class OrderItemViewSet(ModelViewSet):
-    queryset = OrderItem.objects.all()
-    serializer_class = OrderItemSerializer
-
-
-class CartItemViewSet(ModelViewSet):
-    queryset = CartItem.objects.all()
-    serializer_class = CartItemSerializer
 
 
 class FavouriteViewSet(ModelViewSet):

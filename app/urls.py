@@ -8,8 +8,7 @@ from django.urls import path
 from rest_framework.routers import DefaultRouter
 from .views import (CustomerViewSet, SellerViewSet, ShopViewSet,
                     ProductViewSet, ProductImageViewSet,
-                    CartViewSet, OrderViewSet, OrderItemViewSet,
-                    CartItemViewSet, FavouriteViewSet, CategoryViewSet)
+                    CartViewSet, OrderViewSet, FavouriteViewSet, CategoryViewSet)
 
 router = DefaultRouter()
 
@@ -20,9 +19,9 @@ router.register('shop', ShopViewSet)
 router.register('product', ProductViewSet)
 router.register('product-image', ProductImageViewSet)
 router.register('cart', CartViewSet)
-router.register('cart-item', CartItemViewSet)
+# router.register('cart-item', CartItemViewSet)
 router.register('order', OrderViewSet)
-router.register('order-item', OrderItemViewSet)
+# router.register('order-item', OrderItemViewSet)
 router.register('favourite', FavouriteViewSet)
 router.register('category', CategoryViewSet)
 

@@ -19,7 +19,7 @@ class UserSerializer(ModelSerializer):
     def create(self, validated_data):
         password = validated_data.pop("password", None)
         user = super().create(**validated_data)
-        if user.is_superuser == True:
+        if user.is_superuser is True:
             user.is_staff = True
         if password is not None:
             user.set_password(password)
@@ -37,7 +37,7 @@ class UserSerializer(ModelSerializer):
 
 
 class CustomerSavingSerializer(serializers.ModelSerializer):
-    phone = serializers.CharField(max_length=20)
+    phone = serializers.CharField(max_length=20, write_only=True)
     password = serializers.CharField(max_length=128, write_only=True)
 
     class Meta:
@@ -92,7 +92,7 @@ class CustomerGetSerializer(serializers.ModelSerializer):
 
 
 class SellerSavingSerializer(serializers.ModelSerializer):
-    phone = serializers.CharField(max_length=20)
+    phone = serializers.CharField(max_length=20, write_only=True)
     password = serializers.CharField(max_length=128, write_only=True)
 
     class Meta:
@@ -179,18 +179,6 @@ class CartSerializer(ModelSerializer):
 class OrderSerializer(ModelSerializer):
     class Meta:
         model = Order
-        exclude = []
-
-
-class CartItemSerializer(ModelSerializer):
-    class Meta:
-        model = CartItem
-        exclude = []
-
-
-class OrderItemSerializer(ModelSerializer):
-    class Meta:
-        model = OrderItem
         exclude = []
 
 
