@@ -36,6 +36,7 @@ INSTALLED_APPS += [
     'app',
     'rest_framework',
     'mptt',
+    'django_filters',
 ]
 
 INSTALLED_APPS += [
