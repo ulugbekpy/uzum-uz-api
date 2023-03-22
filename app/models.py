@@ -15,7 +15,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     def __str__(self) -> str:
-        return self.username
+        return self.phone
 
 
 class Category(MPTTModel):
@@ -30,7 +30,8 @@ class Category(MPTTModel):
 
 
 class Seller(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, related_name='seller')
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     certificate = models.CharField(max_length=50)
@@ -41,7 +42,8 @@ class Seller(models.Model):
 
 
 class Shop(models.Model):
-    seller = models.ForeignKey(Seller, on_delete=models.CASCADE)
+    seller = models.ForeignKey(
+        Seller, on_delete=models.CASCADE, related_name='shops')
     name = models.CharField(max_length=255)
 
     def __str__(self):
@@ -67,7 +69,8 @@ class ProductImage(models.Model):
 
 
 class Customer(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, related_name='customer')
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     address = models.TextField(blank=True, null=True)
