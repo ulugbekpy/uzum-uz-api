@@ -2,7 +2,7 @@ from rest_framework.serializers import ModelSerializer
 from rest_framework import serializers
 from .models import (User, Customer, Seller, Shop,
                      Category, Product, ProductImage,
-                     Cart, CartItem, Order, OrderItem, Favourite)
+                     Cart, Order, Favourite)
 
 
 class UserSerializer(ModelSerializer):
@@ -56,7 +56,8 @@ class CustomerSavingSerializer(serializers.ModelSerializer):
                 "A user with that phone already exists")
 
         # Create the user
-        user = User(phone=phone, password=password)
+        user = User(phone=phone)
+        user.set_password(password)
         user.save()
 
         # Create the customer
@@ -111,7 +112,8 @@ class SellerSavingSerializer(serializers.ModelSerializer):
                 "A user with that phone already exists")
 
         # Create the user
-        user = User(phone=phone, password=password)
+        user = User(phone=phone)
+        user.set_password(password)
         user.save()
 
         # Create the customer
