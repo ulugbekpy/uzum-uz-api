@@ -1,16 +1,17 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.viewsets import ModelViewSet, ViewSet
-from .models import (User, Customer, Seller, Shop,
-                     Category, Product, ProductImage,
-                     Cart, Order, Favourite)
+from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework.response import Response
+from rest_framework import status
 from .serializers import (UserSerializer, CustomerSavingSerializer, CustomerGetSerializer,
                           SellerSavingSerializer, SellerGetSerializer, ShopSerializer,
                           ProductSerializer, ProductImageSerializer, CategorySerializer,
                           CartSerializer, OrderSerializer, FavouriteSerializer)
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import SearchFilter
+from .models import (User, Customer, Seller, Shop,
+                     Category, Product, ProductImage,
+                     Cart, Order, Favourite)
+from .pagination import DefaultPagination
 from .filters import ProductFilter
-from rest_framework.response import Response
-from rest_framework import status
 
 
 class UserViewSet(ModelViewSet):
@@ -44,9 +45,11 @@ class ShopViewSet(ModelViewSet):
 class ProductViewSet(ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    filter_backends = [DjangoFilterBackend, SearchFilter]
+    pagination_class = DefaultPagination
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_class = ProductFilter
     search_fields = ['title', 'description']
+    ordering_fields = ['category', 'price', 'shop']
 
 
 class ProductImageViewSet(ModelViewSet):
