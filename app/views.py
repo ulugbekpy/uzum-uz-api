@@ -3,7 +3,8 @@ from rest_framework.viewsets import ModelViewSet, ViewSet
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import (UserSerializer, CustomerSavingSerializer, CustomerGetSerializer,
+from .serializers import (UserSerializer, CustomerSavingSerializer,
+                          CustomerGetSerializer,
                           SellerSavingSerializer, SellerGetSerializer, ShopSerializer,
                           ProductSerializer, ProductImageSerializer, CategorySerializer,
                           CartSerializer, OrderSerializer, FavouriteSerializer)

@@ -1,7 +1,7 @@
 from django.contrib import admin
 from mptt.admin import MPTTModelAdmin
 
-from .models import User, Category, Product, Shop, Seller, ProductImage
+from .models import User, Category, Product, Shop, Seller, ProductImage, Customer
 
 
 class ProductImageInlineStackedAdmin(admin.StackedInline):
@@ -54,5 +54,6 @@ class CategoryAdmin(MPTTModelAdmin):
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Shop)
 admin.site.register(Seller)
+admin.site.register(Customer)
 admin.site.register(User)
 admin.site.register(Category, CategoryAdmin)
