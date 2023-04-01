@@ -22,6 +22,12 @@ class OrderPermission(BasePermission):
             else:
                 return False
 
+        if request.method == 'PATCH':
+            if request.user == obj.customer:
+                return True
+            else:
+                return False
+
         return super().has_object_permission(request, view, obj)
 
 
@@ -29,7 +35,13 @@ class SellerPermission(BasePermission):
 
     def has_object_permission(self, request, view, obj):
         if request.method == 'PUT':
-            if request.user.is_superuser or request.user == obj.user:
+            if request.user == obj.user:
+                return True
+            else:
+                return False
+
+        if request.method == 'PATCH':
+            if request.user == obj.user:
                 return True
             else:
                 return False
