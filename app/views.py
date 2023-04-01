@@ -3,13 +3,15 @@ from rest_framework.viewsets import ModelViewSet, ViewSet
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.generics import CreateAPIView
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny
 from .permissions import OrderPermission, SellerPermission
 from .serializers import (UserSerializer, CustomerSavingSerializer,
                           CustomerGetSerializer,
                           SellerSavingSerializer, SellerGetSerializer, ShopSerializer,
                           ProductSerializer, ProductImageSerializer, CategorySerializer,
-                          CartSerializer, OrderSerializer, FavouriteSerializer)
+                          CartSerializer, OrderSerializer, FavouriteSerializer,
+                          RegisterSerializer)
 from .models import (User, Customer, Seller, Shop,
                      Category, Product, ProductImage,
                      Cart, Order, Favourite)
@@ -90,3 +92,9 @@ class CategoryViewSet(ViewSet):
         queryset = self.get_queryset()
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class RegisterView(CreateAPIView):
+    queryset = User.objects.all()
+    permission_classes = (AllowAny,)
+    serializer_class = RegisterSerializer

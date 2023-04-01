@@ -1,8 +1,10 @@
+from rest_framework import serializers, validators
 from rest_framework.serializers import ModelSerializer
-from rest_framework import serializers
 from .models import (User, Customer, Seller, Shop,
                      Category, Product, ProductImage,
                      Cart, Order, Favourite)
+
+from django.db.models import TextChoices
 
 
 class UserSerializer(ModelSerializer):
@@ -196,3 +198,56 @@ class CategorySerializer(ModelSerializer):
     class Meta:
         model = Category
         fields = ['id', 'name', 'slug', 'icon', 'children']
+
+
+class RegisterSerializer(serializers.Serializer):
+    class TypeChoice(TextChoices):
+        CUSTOMER = 'C'
+        SELLER = 'S'
+
+    Type = serializers.ChoiceField(choices=TypeChoice.choices)
+    phone = serializers.CharField(max_length=13, required=True,
+                                  validators=[validators.UniqueValidator(queryset=User.objects.all())])
+
+    password = serializers.CharField(write_only=True, required=True)
+    password2 = serializers.CharField(write_only=True, required=True)
+
+    def create(self, validated_data):
+        if validated_data['Type'] == 'Seller':
+            phone = validated_data.pop('phone')
+            password = validated_data.pop('password')
+
+            # Check if a user already exists with the given phone
+            if User.objects.filter(phone=phone).exists():
+                raise serializers.ValidationError(
+                    "A user with that phone already exists")
+
+            # Create the user
+            user = User(phone=phone)
+            user.set_password(password)
+            user.save()
+
+            # Create the customer
+            seller = Seller.objects.create(user=user, **validated_data)
+
+            return seller
+        elif validated_data['Type'] == 'Customer':
+            phone = validated_data.pop('phone')
+            password = validated_data.pop('password')
+
+            # Check if a user already exists with the given phone
+            if User.objects.filter(phone=phone).exists():
+                raise serializers.ValidationError(
+                    "A user with that phone already exists")
+
+            # Create the user
+            user = User(phone=phone)
+            user.set_password(password)
+            user.save()
+
+            # Create the customer
+            customer = Customer.objects.create(user=user, **validated_data)
+
+            return customer
+
+        return super().create(validated_data)
