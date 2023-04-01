@@ -1,7 +1,7 @@
 from django.contrib import admin
 from mptt.admin import MPTTModelAdmin
 
-from .models import User, Category, Product, Shop, Seller, ProductImage, Customer
+from .models import User, Category, Product, Shop, Seller, ProductImage, Customer, Order
 
 
 class ProductImageInlineStackedAdmin(admin.StackedInline):
@@ -34,6 +34,16 @@ class ProductAdmin(admin.ModelAdmin):
     def shops_seller(self, obj=None):
         return obj.shop.seller  # type: ignore
     shops_seller.short_description = "Sotuvchi"
+
+    def has_delete_permission(self, request, obj=None):
+        if request.user.is_superuser is True:
+            return False
+        return super().has_delete_permission(request, obj)
+
+    def has_change_permission(self, request, obj=None):
+        if request.user.is_superuser is True:
+            return False
+        return super().has_change_permission(request, obj)
 
 
 class CategoryAdmin(MPTTModelAdmin):

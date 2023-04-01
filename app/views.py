@@ -3,6 +3,8 @@ from rest_framework.viewsets import ModelViewSet, ViewSet
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from .permissions import OrderPermission, SellerPermission
 from .serializers import (UserSerializer, CustomerSavingSerializer,
                           CustomerGetSerializer,
                           SellerSavingSerializer, SellerGetSerializer, ShopSerializer,
@@ -31,6 +33,7 @@ class CustomerViewSet(ModelViewSet):
 
 class SellerViewSet(ModelViewSet):
     queryset = Seller.objects.all()
+    permission_classes = [SellerPermission]
 
     def get_serializer_class(self):
         if self.action in ['create', 'update']:
@@ -41,6 +44,7 @@ class SellerViewSet(ModelViewSet):
 class ShopViewSet(ModelViewSet):
     queryset = Shop.objects.all()
     serializer_class = ShopSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 
 class ProductViewSet(ModelViewSet):
@@ -66,6 +70,7 @@ class CartViewSet(ModelViewSet):
 class OrderViewSet(ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
+    permission_classes = [OrderPermission]
 
 
 class FavouriteViewSet(ModelViewSet):
