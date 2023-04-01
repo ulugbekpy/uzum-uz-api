@@ -1,7 +1,7 @@
 from django.contrib import admin
 from mptt.admin import MPTTModelAdmin
 
-from .models import User, Category, Product, Shop, Seller, ProductImage, Customer, Order
+from .models import User, Category, Product, Shop, Seller, ProductImage, Customer
 
 
 class ProductImageInlineStackedAdmin(admin.StackedInline):
@@ -51,14 +51,6 @@ class CategoryAdmin(MPTTModelAdmin):
         return {
             "slug": ("name",)
         }
-
-    # def has_delete_permission(self, request, obj=None) -> bool:
-    #     if hasattr(request.user, "seller"):
-    #         if obj.shop.seller == request.user.seller:
-    #             return True
-    #         else:
-    #             return False
-    #     return super().has_delete_permission(request, obj)
 
 
 admin.site.register(Product, ProductAdmin)
