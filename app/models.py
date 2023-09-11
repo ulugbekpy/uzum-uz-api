@@ -10,7 +10,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=True)
     is_active = models.BooleanField(default=True)
 
-    USERNAME_FIELD = 'phone'
+    USERNAME_FIELD = "phone"
 
     objects = UserManager()
 
@@ -21,8 +21,9 @@ class User(AbstractBaseUser, PermissionsMixin):
 class Category(MPTTModel):
     name = models.CharField(max_length=50, unique=True)
     slug = models.SlugField()
-    parent = TreeForeignKey('self', on_delete=models.CASCADE,
-                            null=True, blank=True, related_name='children')
+    parent = TreeForeignKey(
+        "self", on_delete=models.CASCADE, null=True, blank=True, related_name="children"
+    )
     icon = models.FileField(null=True, blank=True)
 
     def __str__(self) -> str:
@@ -30,8 +31,7 @@ class Category(MPTTModel):
 
 
 class Seller(models.Model):
-    user = models.OneToOneField(
-        User, on_delete=models.CASCADE, related_name='seller')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="seller")
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     certificate = models.CharField(max_length=50)
@@ -42,8 +42,7 @@ class Seller(models.Model):
 
 
 class Shop(models.Model):
-    seller = models.ForeignKey(
-        Seller, on_delete=models.CASCADE, related_name='shops')
+    seller = models.ForeignKey(Seller, on_delete=models.CASCADE, related_name="shops")
     name = models.CharField(max_length=255)
 
     def __str__(self):
@@ -53,8 +52,7 @@ class Shop(models.Model):
 class Product(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
-    category = models.ManyToManyField(
-        Category, related_name='product')
+    category = models.ManyToManyField(Category, related_name="product")
     price = models.DecimalField(max_digits=10, decimal_places=2)
     amount = models.IntegerField(null=True, blank=True)
     shop = models.ForeignKey(Shop, on_delete=models.CASCADE)
@@ -65,12 +63,11 @@ class Product(models.Model):
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='products/')
+    image = models.ImageField(upload_to="products/")
 
 
 class Customer(models.Model):
-    user = models.OneToOneField(
-        User, on_delete=models.CASCADE, related_name='customer')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="customer")
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     address = models.TextField(blank=True, null=True)
@@ -82,12 +79,14 @@ class Customer(models.Model):
 class Cart(models.Model):
     ip_address = models.CharField(max_length=50, null=True, blank=True)
     customer = models.ForeignKey(
-        Customer, on_delete=models.CASCADE, null=True, blank=True)
+        Customer, on_delete=models.CASCADE, null=True, blank=True
+    )
 
     def full_clean(self, *args, **kwargs):
         if [self.ip_address, self.customer].count(None) != 2:
             raise ValidationError(
-                "Either `ip_address` or `customer` field should be provided")
+                "Either `ip_address` or `customer` field should be provided"
+            )
         return super().full_clean(*args, **kwargs)
 
 
@@ -97,21 +96,22 @@ class CartItem(models.Model):
     quantity = models.IntegerField(default=1)
 
     class Meta:
-        unique_together = ('cart', 'product')
+        unique_together = ("cart", "product")
 
 
 class Order(models.Model):
-
     class StatusChoice(models.TextChoices):
-        INCONFIRMED = 'I'
-        PENDING = 'P'
-        DELIVERED = 'D'
-        CANCELLED = 'C'
+        INCONFIRMED = "I"
+        PENDING = "P"
+        DELIVERED = "D"
+        CANCELLED = "C"
 
     customer = models.ForeignKey(
-        Customer, on_delete=models.CASCADE, related_name='orders')
+        Customer, on_delete=models.CASCADE, related_name="orders"
+    )
     status = models.CharField(
-        max_length=1, choices=StatusChoice.choices, default=StatusChoice.INCONFIRMED)
+        max_length=1, choices=StatusChoice.choices, default=StatusChoice.INCONFIRMED
+    )
     address = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now_add=True)
@@ -126,10 +126,9 @@ class OrderItem(models.Model):
     quantity = models.IntegerField(default=1)
 
     class Meta:
-        unique_together = ('order', 'product')
+        unique_together = ("order", "product")
 
 
 class Favourite(models.Model):
-    user = models.ForeignKey(
-        User, on_delete=models.PROTECT, null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.PROTECT, null=True, blank=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
